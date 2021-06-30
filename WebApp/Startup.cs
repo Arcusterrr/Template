@@ -4,26 +4,32 @@ using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using WebApp.ServiceInstallers.Abstractions;
 using Microsoft.OpenApi.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace Template
+namespace WebApp
 {
     public class Startup
     {
-        public Startup(IConfiguration configuration)
+
+        private readonly IConfiguration _configuration;
+        private readonly IHostEnvironment _env;
+
+        public Startup(IConfiguration configuration, IHostEnvironment env)
         {
-            Configuration = configuration;
+            _configuration = configuration;
+            _env = env;
         }
 
         public IConfiguration Configuration { get; }
 
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddControllers();
+            services.InstallFromAssembly(_configuration, _env);
         }
 
 
